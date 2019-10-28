@@ -11,3 +11,6 @@ libraryDependencies ++= Seq(
 )
 
 
+bintrayOrganization := Some("teammood")
+
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
