@@ -2,7 +2,7 @@ name := "slack-scala-api"
 
 organization := "com.teammood"
 
-version := "0.9.0"
+version := "0.9.1-SNAPSHOT"
 
 scalaVersion := "2.12.7"
 
