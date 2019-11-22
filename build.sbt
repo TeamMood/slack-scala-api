@@ -2,7 +2,7 @@ name := "slack-scala-api"
 
 organization := "com.teammood"
 
-version := "0.9.4-SNAPSHOT"
+version := "0.10.0"
 
 crossScalaVersions := Seq("2.12.7", "2.13.1")
 
