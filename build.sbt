@@ -10,7 +10,8 @@ scalaVersion := "2.12.7"
 
 libraryDependencies ++= Seq(
     "com.typesafe.play" %% "play-json" % "2.7.4",
-    "org.specs2" %% "specs2-core" % "4.6.0" % "test"
+    "org.specs2" %% "specs2-core" % "4.6.0" % "test",
+    "com.fasterxml.jackson.core" % "jackson-databind" % "2.9.8" % "test" // for Json equality in tests
 )
 
 scalacOptions in Test ++= Seq("-Yrangepos") // for Specs2

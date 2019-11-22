@@ -1,5 +1,7 @@
 package com.teammood.slack.model
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import play.api.libs.json.{Json, Writes}
 
@@ -7,9 +9,13 @@ class SlackMessageSpec extends Specification {
 
   "SlackMessage" should {
 
-    "create the correct Json payload for a short Slack message" in {
+    def assetEquals(actual: String, expected: String): MatchResult[Boolean] = {
+      // Using Jackson to compare Json
+      val mapper = new ObjectMapper()
+      (mapper.readTree(actual) == mapper.readTree(expected)) must beTrue
+    }
 
-      val sanitize: String => String = _.replaceAll("\n", "").replaceAll("\t", "").replaceAll(" ", "")
+    "create the correct Json payload for a short Slack message" in {
 
       val expected =
         """
@@ -26,7 +32,6 @@ class SlackMessageSpec extends Specification {
           |}
           |""".stripMargin
 
-
       val title = SlackSection(Some(SlackText("Hey Nicolas, how's your day today?")))
 
       val message = SlackMessage(Seq(title))
@@ -34,8 +39,46 @@ class SlackMessageSpec extends Specification {
       implicit val messageWriter: Writes[SlackMessage] = SlackMessage.slackSlackMessageWrites
       val json = Json.toJson(message)
 
-      sanitize(json.toString()) must beEqualTo(sanitize(expected))
+      assetEquals(json.toString(), expected)
+    }
 
+    "create the correct Json payload for a Slack message with actions" in {
+
+      val expected =
+        """
+          |{
+          |  "blocks": [
+          |   {
+          |			"type": "actions",
+          |     "block_id": "this is a block id",
+          |			"elements": [
+          |				{
+          |					"type": "button",
+          |					"text": {
+          |						"type": "plain_text",
+          |						"text": "Excellent"
+          |					},
+          |					"value": "excellent"
+          |				}
+          |			]
+          |   }
+          |   ]
+          |}
+          |""".stripMargin
+
+      val buttons = SlackActions(
+        Some("this is a block id"),
+        Seq(
+          SlackButtonElement(SlackPlainText("Excellent"), Some("excellent"))
+        )
+      )
+
+      val message = SlackMessage(Seq(buttons))
+
+      implicit val messageWriter: Writes[SlackMessage] = SlackMessage.slackSlackMessageWrites
+      val json = Json.toJson(message)
+
+      assetEquals(json.toString(), expected)
     }
   }
 }
