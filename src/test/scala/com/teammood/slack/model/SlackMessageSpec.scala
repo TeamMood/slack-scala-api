@@ -1,13 +1,14 @@
 package com.teammood.slack.model
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.teammood.slack.json.SlackMessageJsonWriter
 import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import play.api.libs.json.{Json, Writes}
 
 class SlackMessageSpec extends Specification {
 
-  "SlackMessage" should {
+  "SlackMessageJsonWriter" should {
 
     def assetEquals(actual: String, expected: String): MatchResult[Boolean] = {
       // Using Jackson to compare Json
@@ -36,7 +37,7 @@ class SlackMessageSpec extends Specification {
 
       val message = SlackMessage(Seq(title))
 
-      implicit val messageWriter: Writes[SlackMessage] = SlackMessage.slackSlackMessageWrites
+      implicit val messageWriter: Writes[SlackMessage] = SlackMessageJsonWriter.slackSlackMessageWrites
       val json = Json.toJson(message)
 
       assetEquals(json.toString(), expected)
@@ -75,7 +76,7 @@ class SlackMessageSpec extends Specification {
 
       val message = SlackMessage(Seq(buttons))
 
-      implicit val messageWriter: Writes[SlackMessage] = SlackMessage.slackSlackMessageWrites
+      implicit val messageWriter: Writes[SlackMessage] = SlackMessageJsonWriter.slackSlackMessageWrites
       val json = Json.toJson(message)
 
       assetEquals(json.toString(), expected)
