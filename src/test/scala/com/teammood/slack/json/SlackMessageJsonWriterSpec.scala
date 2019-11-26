@@ -1,12 +1,12 @@
-package com.teammood.slack.model
+package com.teammood.slack.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.teammood.slack.json.SlackMessageJsonWriter
+import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackMessage, SlackPlainText, SlackSection, SlackText}
 import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import play.api.libs.json.{Json, Writes}
 
-class SlackMessageSpec extends Specification {
+class SlackMessageJsonWriterSpec extends Specification {
 
   "SlackMessageJsonWriter" should {
 
