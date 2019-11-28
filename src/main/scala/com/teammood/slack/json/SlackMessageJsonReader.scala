@@ -1,6 +1,6 @@
 package com.teammood.slack.json
 
-import com.teammood.slack.model.{SlackActions, SlackBlock, SlackBlockElement, SlackButtonElement, SlackButtonStyle, SlackContext, SlackDangerButtonStyle, SlackDivider, SlackImageElement, SlackMessage, SlackPlainText, SlackPrimaryButtonStyle, SlackSection, SlackText}
+import com.teammood.slack.model.{SlackActions, SlackBlock, SlackBlockElement, SlackButtonElement, SlackButtonStyle, SlackContext, SlackDangerButtonStyle, SlackDivider, SlackImageBlock, SlackImageElement, SlackMessage, SlackPlainText, SlackPrimaryButtonStyle, SlackSection, SlackText}
 import play.api.libs.json.{JsPath, JsSuccess, Json, Reads, __}
 import play.api.libs.functional.syntax._
 
@@ -42,6 +42,7 @@ object SlackMessageJsonReader {
   }
   implicit val slackActionsReads: Reads[SlackActions] = Json.reads[SlackActions]
   implicit val slackContextReads: Reads[SlackContext] = Json.reads[SlackContext]
+  implicit val slackImageBlockReads: Reads[SlackImageBlock] = Json.reads[SlackImageBlock]
   implicit val slackBlockReads: Reads[SlackBlock] =  (
     (__ \ 'type).read[String] and
       __.json.pick
@@ -51,6 +52,7 @@ object SlackMessageJsonReader {
       case "section" => Reads { _ => Json.fromJson[SlackSection](js) } map { c => c: SlackSection }
       case "actions" => Reads { _ => Json.fromJson[SlackActions](js) } map { c => c: SlackActions }
       case "context" => Reads { _ => Json.fromJson[SlackContext](js) } map { c => c: SlackContext }
+      case "image" => Reads { _ => Json.fromJson[SlackImageBlock](js) } map { c => c: SlackImageBlock }
     }
   }
 

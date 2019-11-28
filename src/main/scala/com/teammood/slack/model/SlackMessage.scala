@@ -19,6 +19,9 @@ case class SlackDivider() extends SlackBlock {
 case class SlackActions(block_id: Option[String] = None, elements: Seq[SlackBlockElement] = Seq()) extends SlackBlock {
   override val id = "actions"
 }
+case class SlackImageBlock(image_url: String, alt_text: String, block_id: Option[String] = None, title: Option[SlackPlainText] = None) extends SlackBlock {
+  override val id = "image"
+}
 
 sealed trait SlackButtonStyle {
   val id: String

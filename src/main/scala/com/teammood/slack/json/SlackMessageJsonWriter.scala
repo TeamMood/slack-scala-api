@@ -1,6 +1,6 @@
 package com.teammood.slack.json
 
-import com.teammood.slack.model.{SlackActions, SlackBlock, SlackBlockElement, SlackButtonElement, SlackContext, SlackDivider, SlackImageElement, SlackMessage, SlackPlainText, SlackSection, SlackText}
+import com.teammood.slack.model._
 import play.api.libs.json.{Json, Writes}
 
 object SlackMessageJsonWriter {
@@ -70,6 +70,11 @@ object SlackMessageJsonWriter {
           Json.obj("elements" -> optionalElements)
         }
         baseJson ++ blockId ++ elements
+      case SlackImageBlock(image_url, alt_text, optionalBlockId, optionalTitle) =>
+        val blockId = optionalBlockId.map(bid => Json.obj("block_id" -> bid)).getOrElse(Json.obj())
+        val title = optionalTitle.map(title => Json.obj("title" -> title)).getOrElse(Json.obj())
+
+        baseJson ++ blockId ++ Json.obj("image_url" -> image_url, "alt_text" -> alt_text) ++ title
       case _ => baseJson
     }
   }

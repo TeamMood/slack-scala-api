@@ -1,7 +1,7 @@
 package com.teammood.slack.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackContext, SlackMessage, SlackPlainText, SlackSection, SlackText}
+import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackContext, SlackImageBlock, SlackMessage, SlackPlainText, SlackSection, SlackText}
 import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import play.api.libs.json.{Json, Writes}
@@ -104,6 +104,36 @@ class SlackMessageJsonWriterSpec extends Specification {
       val context = SlackContext(elements = Seq(SlackText("0 agree, 3 disagree, 5 comments")))
 
       val message = SlackMessage(Seq(context))
+
+      implicit val messageWriter: Writes[SlackMessage] = SlackMessageJsonWriter.slackSlackMessageWrites
+      val json = Json.toJson(message)
+
+      assetEquals(json.toString(), expected)
+    }
+
+    "create the correct Json payload for a Slack image" in {
+
+      val expected =
+        """
+          |{
+          |  "blocks": [
+          |  {
+          |  "type": "image",
+          |  "title": {
+          |    "type": "plain_text",
+          |    "text": "Please enjoy this photo of a kitten"
+          |  },
+          |  "block_id": "image4",
+          |  "image_url": "http://placekitten.com/500/500",
+          |  "alt_text": "An incredibly cute kitten."
+          |}
+          |  ]
+          |}
+          |""".stripMargin
+
+      val image = SlackImageBlock("http://placekitten.com/500/500", "An incredibly cute kitten.", block_id = Some("image4"), title = Some(SlackPlainText("Please enjoy this photo of a kitten")))
+
+      val message = SlackMessage(Seq(image))
 
       implicit val messageWriter: Writes[SlackMessage] = SlackMessageJsonWriter.slackSlackMessageWrites
       val json = Json.toJson(message)
