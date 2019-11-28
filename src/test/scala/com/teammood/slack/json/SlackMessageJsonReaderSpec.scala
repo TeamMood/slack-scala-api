@@ -1,6 +1,6 @@
 package com.teammood.slack.json
 
-import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackDangerButtonStyle, SlackMessage, SlackSection}
+import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackContext, SlackDangerButtonStyle, SlackMessage, SlackSection}
 import org.specs2.execute.Result
 import org.specs2.mutable.Specification
 import play.api.libs.json.{JsError, JsSuccess, Json}
@@ -9,8 +9,7 @@ class SlackMessageJsonReaderSpec extends Specification {
 
   "SlackMessageJsonReader" should {
 
-
-    "parse a json with a Slack simple section" in {
+    "parse a json with a Slack section" in {
 
       val json =
         """
@@ -136,6 +135,36 @@ class SlackMessageJsonReaderSpec extends Specification {
           value.blocks.size must beEqualTo(1) and
             (value.blocks.head must beAnInstanceOf[SlackActions]) and
             (value.blocks.head.asInstanceOf[SlackActions].elements.head.asInstanceOf[SlackButtonElement].style must beSome().which(_ == SlackDangerButtonStyle))
+        case JsError(errors) => failure(errors.mkString("\n"))
+      }
+      result
+    }
+
+    "parse a json with a Slack context" in {
+
+      val json =
+        """
+          |{
+          |  "blocks": [
+          |    {
+          |      "type": "context",
+          |		   "elements": [
+          |			   {
+          |				   "type": "mrkdwn",
+          |				   "text": "0 agree, 3 disagree, 5 comments"
+          |			   }
+          |		   ]
+          |    }
+          |  ]
+          |}
+          |""".stripMargin
+
+      import SlackMessageJsonReader._
+
+      val result: Result = Json.parse(json).validate[SlackMessage] match {
+        case JsSuccess(value, _) =>
+          value.blocks.size must beEqualTo(1) and
+            (value.blocks.head must beAnInstanceOf[SlackContext])
         case JsError(errors) => failure(errors.mkString("\n"))
       }
       result

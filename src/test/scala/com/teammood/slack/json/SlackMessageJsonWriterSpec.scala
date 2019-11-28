@@ -1,7 +1,7 @@
 package com.teammood.slack.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackMessage, SlackPlainText, SlackSection, SlackText}
+import com.teammood.slack.model.{SlackActions, SlackButtonElement, SlackContext, SlackMessage, SlackPlainText, SlackSection, SlackText}
 import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import play.api.libs.json.{Json, Writes}
@@ -75,6 +75,35 @@ class SlackMessageJsonWriterSpec extends Specification {
       )
 
       val message = SlackMessage(Seq(buttons))
+
+      implicit val messageWriter: Writes[SlackMessage] = SlackMessageJsonWriter.slackSlackMessageWrites
+      val json = Json.toJson(message)
+
+      assetEquals(json.toString(), expected)
+    }
+
+    "create the correct Json payload for a Slack context" in {
+
+      val expected =
+        """
+          |{
+          |  "blocks": [
+          |    {
+          |      "type": "context",
+          |		   "elements": [
+          |			   {
+          |				   "type": "mrkdwn",
+          |				   "text": "0 agree, 3 disagree, 5 comments"
+          |			   }
+          |		   ]
+          |    }
+          |  ]
+          |}
+          |""".stripMargin
+
+      val context = SlackContext(elements = Seq(SlackText("0 agree, 3 disagree, 5 comments")))
+
+      val message = SlackMessage(Seq(context))
 
       implicit val messageWriter: Writes[SlackMessage] = SlackMessageJsonWriter.slackSlackMessageWrites
       val json = Json.toJson(message)

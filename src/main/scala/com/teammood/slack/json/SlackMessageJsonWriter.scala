@@ -1,6 +1,6 @@
 package com.teammood.slack.json
 
-import com.teammood.slack.model.{SlackActions, SlackBlock, SlackBlockElement, SlackButtonElement, SlackDivider, SlackImageElement, SlackMessage, SlackPlainText, SlackSection, SlackText}
+import com.teammood.slack.model.{SlackActions, SlackBlock, SlackBlockElement, SlackButtonElement, SlackContext, SlackDivider, SlackImageElement, SlackMessage, SlackPlainText, SlackSection, SlackText}
 import play.api.libs.json.{Json, Writes}
 
 object SlackMessageJsonWriter {
@@ -31,6 +31,8 @@ object SlackMessageJsonWriter {
         val style = optionalStyle.map(s => Json.obj("style" -> s.id)).getOrElse(Json.obj())
 
         baseJson ++ Json.obj("text"-> text) ++ value ++ style
+      case slackText: SlackText => slackSlackTextWrites.writes(slackText)
+      case slackPlainText: SlackPlainText => slackSlackSlackPlainTextWrites.writes(slackPlainText)
       case _ => baseJson
     }
   }
@@ -60,6 +62,14 @@ object SlackMessageJsonWriter {
         val accessory = optionalAccessory.map(accessory => Json.obj("accessory" -> accessory)).getOrElse(Json.obj())
 
         baseJson ++ text ++ fields ++ accessory
+      case SlackContext(optionalBlockId, optionalElements) =>
+        val blockId = optionalBlockId.map(bid => Json.obj("block_id" -> bid)).getOrElse(Json.obj())
+        val elements = if (optionalElements.isEmpty) {
+          Json.obj()
+        } else {
+          Json.obj("elements" -> optionalElements)
+        }
+        baseJson ++ blockId ++ elements
       case _ => baseJson
     }
   }
