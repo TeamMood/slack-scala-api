@@ -41,7 +41,7 @@ case class SlackImageElement(image_url: String, alt_text: String) extends SlackB
   override val id: String = "image"
 }
 
-case class SlackButtonElement(text: SlackPlainText, value: Option[String] = None, style: Option[SlackButtonStyle] = None) extends SlackBlockElement {
+case class SlackButtonElement(text: SlackPlainText, value: Option[String] = None, url: Option[String] = None, style: Option[SlackButtonStyle] = None) extends SlackBlockElement {
   override val id: String = "button"
 }
 

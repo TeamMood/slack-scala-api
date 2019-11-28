@@ -26,11 +26,12 @@ object SlackMessageJsonWriter {
           "image_url"-> image_url,
           "alt_text" -> alt_text
         )
-      case SlackButtonElement(text, optionalValue, optionalStyle) =>
+      case SlackButtonElement(text, optionalValue, optionalUrl, optionalStyle) =>
         val value = optionalValue.map(v => Json.obj("value" -> v)).getOrElse(Json.obj())
         val style = optionalStyle.map(s => Json.obj("style" -> s.id)).getOrElse(Json.obj())
+        val url = optionalUrl.map(u => Json.obj("url" -> u)).getOrElse(Json.obj())
 
-        baseJson ++ Json.obj("text"-> text) ++ value ++ style
+        baseJson ++ Json.obj("text"-> text) ++ value ++ style ++ url
       case slackText: SlackText => slackSlackTextWrites.writes(slackText)
       case slackPlainText: SlackPlainText => slackSlackSlackPlainTextWrites.writes(slackPlainText)
       case _ => baseJson
