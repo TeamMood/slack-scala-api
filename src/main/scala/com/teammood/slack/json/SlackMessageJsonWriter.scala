@@ -45,14 +45,13 @@ object SlackMessageJsonWriter {
 
     o match {
       case SlackDivider() => baseJson
-      case SlackActions(optionalBlockId, optionalElements) =>
-        val blockId = optionalBlockId.map(bid => Json.obj("block_id" -> bid)).getOrElse(Json.obj())
+      case SlackActions(blockId, optionalElements) =>
         val elements = if (optionalElements.isEmpty) {
           Json.obj()
         } else {
           Json.obj("elements" -> optionalElements)
         }
-        baseJson ++ blockId ++ elements
+        baseJson ++ Json.obj("block_id" -> blockId) ++ elements
       case SlackSection(optionalText, optionalFields, optionalAccessory) =>
         val text = optionalText.map(text => Json.obj("text" -> text)).getOrElse(Json.obj())
         val fields = if (optionalFields.isEmpty) {

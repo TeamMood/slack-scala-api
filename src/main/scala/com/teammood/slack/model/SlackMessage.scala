@@ -16,7 +16,7 @@ case class SlackContext(block_id: Option[String] = None, elements: Seq[SlackBloc
 case class SlackDivider() extends SlackBlock {
   override val id = "divider"
 }
-case class SlackActions(block_id: Option[String] = None, elements: Seq[SlackBlockElement] = Seq()) extends SlackBlock {
+case class SlackActions(block_id: String, elements: Seq[SlackBlockElement] = Seq()) extends SlackBlock {
   override val id = "actions"
 }
 case class SlackImageBlock(image_url: String, alt_text: String, block_id: Option[String] = None, title: Option[SlackPlainText] = None) extends SlackBlock {

@@ -112,6 +112,7 @@ class SlackMessageJsonReaderSpec extends Specification {
           |	"blocks": [
           |		{
           |			"type": "actions",
+          |     "block_id": "a block id",
           |			"elements": [
           |				{
           |					"type": "button",

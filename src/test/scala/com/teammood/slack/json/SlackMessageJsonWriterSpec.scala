@@ -68,7 +68,7 @@ class SlackMessageJsonWriterSpec extends Specification {
           |""".stripMargin
 
       val buttons = SlackActions(
-        Some("this is a block id"),
+        "this is a block id",
         Seq(
           SlackButtonElement(SlackPlainText("Excellent"), value = Some("excellent"))
         )
