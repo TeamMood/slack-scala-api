@@ -1,3 +1,4 @@
+
 name := "slack-scala-api"
 
 organization := "com.teammood"
@@ -16,6 +17,8 @@ libraryDependencies ++= Seq(
 
 scalacOptions in Test ++= Seq("-Yrangepos") // for Specs2
 
-bintrayOrganization := Some("teammood")
+publishMavenStyle := true
+publishTo := Some("mymavenrepo.com.write" at "https://mymavenrepo.com/repo/dukQxd8bxgHTFMPUdYTb/")
+
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
