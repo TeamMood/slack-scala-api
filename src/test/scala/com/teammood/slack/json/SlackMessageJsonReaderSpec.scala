@@ -135,7 +135,7 @@ class SlackMessageJsonReaderSpec extends Specification {
         case JsSuccess(value, _) =>
           value.blocks.size must beEqualTo(1) and
             (value.blocks.head must beAnInstanceOf[SlackActions]) and
-            (value.blocks.head.asInstanceOf[SlackActions].elements.head.asInstanceOf[SlackButtonElement].style must beSome().which(_ == SlackDangerButtonStyle))
+            (value.blocks.head.asInstanceOf[SlackActions].elements.head.asInstanceOf[SlackButtonElement].style must beEqualTo(Some(SlackDangerButtonStyle)))
         case JsError(errors) => failure(errors.mkString("\n"))
       }
       result

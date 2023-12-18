@@ -22,7 +22,7 @@ object SlackMessageJsonReader {
   implicit val slackImageElementReads: Reads[SlackImageElement] = Json.reads[SlackImageElement]
   implicit val slackButtonElementReads: Reads[SlackButtonElement] = Json.reads[SlackButtonElement]
   implicit val slackBlockElementReads: Reads[SlackBlockElement] =  (
-    (__ \ 'type).read[String] and
+    (__ \ "type").read[String] and
       __.json.pick
     ).tupled flatMap { case (slackBlockType, js) =>
     slackBlockType.toLowerCase match {
@@ -36,7 +36,7 @@ object SlackMessageJsonReader {
   implicit val slackSectionReads: Reads[SlackSection] = (
     (JsPath \ "text").readNullable[SlackText] and
       (JsPath \ "fields").readNullable[Seq[SlackText]] and
-      (JsPath \ 'accessory).readNullable[SlackBlockElement]
+      (JsPath \ "accessory").readNullable[SlackBlockElement]
     ) { (text, fields, accessory) =>
     SlackSection(text, fields.getOrElse(Seq.empty), accessory)
   }
@@ -44,7 +44,7 @@ object SlackMessageJsonReader {
   implicit val slackContextReads: Reads[SlackContext] = Json.reads[SlackContext]
   implicit val slackImageBlockReads: Reads[SlackImageBlock] = Json.reads[SlackImageBlock]
   implicit val slackBlockReads: Reads[SlackBlock] =  (
-    (__ \ 'type).read[String] and
+    (__ \ "type").read[String] and
       __.json.pick
     ).tupled flatMap { case (slackBlockType, js) =>
     slackBlockType.toLowerCase match {
