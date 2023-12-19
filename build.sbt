@@ -20,6 +20,6 @@ ThisBuild / versionScheme := Some("early-semver")
 releaseCrossBuild := true
 
 publishMavenStyle := true
-publishTo := Some("github" at "https://maven.pkg.github.com/TeamMood/slack-scala-api")
+publishTo := Some("GitHub Package Registry" at "https://maven.pkg.github.com/TeamMood/slack-scala-api")
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
