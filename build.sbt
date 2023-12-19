@@ -3,8 +3,6 @@ name := "slack-scala-api"
 
 organization := "com.teammood"
 
-version := "1.1.0"
-
 scalaVersion := "2.13.12"
 
 crossScalaVersions := Seq("2.13.12", "3.3.1")
@@ -17,7 +15,11 @@ libraryDependencies ++= Seq(
 
 scalacOptions in Test ++= Seq("-Yrangepos") // for Specs2
 
+ThisBuild / versionScheme := Some("early-semver")
+
+releaseCrossBuild := true
+
 publishMavenStyle := true
-publishTo := Some("mymavenrepo.com.write" at "https://mymavenrepo.com/repo/dukQxd8bxgHTFMPUdYTb/")
+publishTo := Some("github" at "https://maven.pkg.github.com/TeamMood/slack-scala-api")
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
