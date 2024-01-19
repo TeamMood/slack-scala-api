@@ -57,7 +57,7 @@ object SlackMessageJsonWriter {
         val fields = if (optionalFields.isEmpty) {
           Json.obj()
         } else {
-          Json.obj("fields" -> Json.arr(optionalFields.map(Json.toJson(_)(slackSlackTextWrites))))
+          Json.obj("fields" -> optionalFields.map(Json.toJson(_)(slackSlackTextWrites)))
         }
         val accessory = optionalAccessory.map(accessory => Json.obj("accessory" -> accessory)).getOrElse(Json.obj())
 
